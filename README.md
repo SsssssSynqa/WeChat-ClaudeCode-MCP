@@ -19,6 +19,7 @@
 - macOS arm64，微信 4.x
 - 禁用 SIP：`csrutil disable`（提取密钥时需要，解密和查询不需要）
 - 安装依赖：`brew install llvm sqlcipher`
+- Python 依赖：`pip3 install fastmcp sqlcipher3`（MCP Server 和实时轮询需要）
 
 ### 2. 提取密钥
 
@@ -62,9 +63,11 @@ python3 export_messages.py --all
 安装依赖并注册到 Claude Code：
 
 ```bash
-pip3 install fastmcp
+pip3 install fastmcp sqlcipher3
 claude mcp add wechat -- python3 $(pwd)/mcp_server.py
 ```
+
+MCP Server 直接查询加密数据库（通过 sqlcipher3），无需预先解密，始终读取最新消息。
 
 注册后 AI 可以直接调用以下能力：
 
@@ -74,7 +77,6 @@ claude mcp add wechat -- python3 $(pwd)/mcp_server.py
 | `get_chat_history` | 查看聊天记录（支持模糊匹配、日期筛选） |
 | `search_messages` | 跨会话搜索关键词 |
 | `get_contacts` | 搜索联系人 |
-| `sync` | 手动同步数据库（通常自动同步，每60秒） |
 
 ### 6. 消息轮询（实时监听新消息）
 
@@ -93,7 +95,9 @@ python3 poll_messages.py 12345@chatroom 10
 
 ## 工作原理
 
-微信桌面版使用 SQLCipher 加密本地数据库。加密密钥在微信启动时通过 PBKDF2-HMAC-SHA512 派生，存储在进程内存中。本工具通过 LLDB 调试器扫描微信进程内存，定位并提取这些密钥，然后使用 sqlcipher 解密数据库文件为普通 SQLite 格式。
+微信桌面版使用 SQLCipher 加密本地数据库。加密密钥在微信启动时通过 PBKDF2-HMAC-SHA512 派生，存储在进程内存中。本工具通过 LLDB 调试器扫描微信进程内存，定位并提取这些密钥。
+
+MCP Server 和消息轮询使用 [sqlcipher3](https://pypi.org/project/sqlcipher3/)（Python 绑定）直接查询加密数据库，每次只解密查询涉及的数据页，无需预先解密整个数据库文件。`decrypt_db.py` 和 `export_messages.py` 则通过 sqlcipher CLI 将数据库完整解密为明文 SQLite 文件，适合离线分析和导出。
 
 ## 致谢
 

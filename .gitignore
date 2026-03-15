@@ -12,3 +12,4 @@ wechat_keys*.json
 decrypted/
 exported/
 *.txt
+!requirements.txt
