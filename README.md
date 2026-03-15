@@ -10,6 +10,7 @@
 - 🔓 **数据库解密**：使用 SQLCipher 解密所有本地数据库（消息、联系人、会话等）
 - 💬 **消息导出**：按联系人/群聊导出，支持模糊匹配、关键词搜索、日期筛选
 - 🤖 **MCP Server**：注册到 Claude Code 后，AI 可直接查询微信数据
+- 📡 **消息轮询**：实时监听指定对话的新消息，适配 Claude Code 的微信聊天模式
 
 ## 快速开始
 
@@ -74,6 +75,21 @@ claude mcp add wechat -- python3 $(pwd)/mcp_server.py
 | `search_messages` | 跨会话搜索关键词 |
 | `get_contacts` | 搜索联系人 |
 | `sync` | 手动同步数据库（通常自动同步，每60秒） |
+
+### 6. 消息轮询（实时监听新消息）
+
+```bash
+# 轮询指定对话，每8秒检查一次（默认）
+python3 poll_messages.py wxid_xxx
+
+# 自定义轮询间隔
+python3 poll_messages.py wxid_xxx 5
+
+# 轮询群聊
+python3 poll_messages.py 12345@chatroom 10
+```
+
+检测到新消息时打印并退出，适合在 Claude Code 中配合后台任务使用。
 
 ## 工作原理
 
