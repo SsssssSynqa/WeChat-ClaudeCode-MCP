@@ -2,6 +2,7 @@
 .mypy_cache
 __pycache__
 *.pyc
+.venv/
 
 # Sensitive data
 wechat_keys.json
@@ -10,3 +11,4 @@ wechat_keys*.json
 # Output directories
 decrypted/
 exported/
+*.txt
