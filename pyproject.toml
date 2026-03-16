@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wechat-claudecode-mcp"
+version = "0.1.0"
+description = "WeChat MCP Server — let AI query your WeChat messages directly"
+readme = "README.md"
+license = "WTFPL"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=2.0",
+    "sqlcipher3",
+]
+
+[project.optional-dependencies]
+windows = ["pymem", "psutil"]
+
+[project.scripts]
+wechat-mcp = "wechat_mcp.server:main"
+wechat-mcp-keygen = "wechat_mcp.keygen:main"
+wechat-mcp-keygen-win = "wechat_mcp.keygen_windows:main"
+wechat-mcp-decrypt = "wechat_mcp.decrypt:main"
+wechat-mcp-export = "wechat_mcp.export:main"
+wechat-mcp-verify = "wechat_mcp.verify:main"
+wechat-mcp-poll = "wechat_mcp.poll:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["wechat_mcp"]
+
+[project.urls]
+Homepage = "https://github.com/SsssssSynqa/WeChat-ClaudeCode-MCP"

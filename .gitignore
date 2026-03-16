@@ -13,3 +13,9 @@ decrypted/
 exported/
 *.txt
 !requirements.txt
+
+# Build artifacts
+dist/
+*.egg-info/
+build/
+.test-venv/
