@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "wechat-claudecode-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "WeChat MCP Server — let AI query your WeChat messages directly"
 readme = "README.md"
 license = "WTFPL"
@@ -25,6 +25,8 @@ wechat-mcp-decrypt = "wechat_mcp.decrypt:main"
 wechat-mcp-export = "wechat_mcp.export:main"
 wechat-mcp-verify = "wechat_mcp.verify:main"
 wechat-mcp-poll = "wechat_mcp.poll:main"
+wechat-mcp-setup = "wechat_mcp.setup:main"
+wechat-mcp-chat = "wechat_mcp.chat:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["wechat_mcp"]

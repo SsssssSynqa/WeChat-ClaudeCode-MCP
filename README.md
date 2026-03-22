@@ -2,9 +2,25 @@
 
 让 Claude Code 连接微信——查历史记录、监听新消息、实时聊天，三种能力可独立使用也可搭配组合。
 
+## 🚀 只想在微信里跟 Claude 聊天？三步搞定
+
+不需要提取密钥、不需要禁用 SIP、不需要任何技术背景：
+
+```bash
+pip install wechat-claudecode-mcp    # 1. 安装
+wechat-mcp-setup                      # 2. 一键配置（只需运行一次）
+wechat-mcp-chat                       # 3. 启动！扫码登录，开始聊天
+```
+
+首次启动会弹出微信二维码，用手机扫码登录。之后每次只需 `wechat-mcp-chat` 即可自动连接。
+
+> 💡 这使用的是微信官方 ClawBot（iLink Bot API）。你在微信里会看到一个 "Claude code" AI 联系人，直接给它发消息就是在跟 Claude 聊天。
+
+---
+
 ## 三种能力一览
 
-本项目提供两种能力，另外推荐一个第三方项目实现第三种能力。三者定位不同，解决不同场景的需求：
+本项目提供三种能力，定位不同，解决不同场景的需求：
 
 | | 📚 MCP Server（本项目） | 📡 消息轮询 + 发送（本项目） | 💬 微信 ClawBot 实时聊天 |
 |---|---|---|---|
@@ -177,7 +193,19 @@ wechat-mcp-poll 12345@chatroom 10
 - Node.js 18+
 - 不需要提取密钥，不需要禁用 SIP
 
-### 安装
+### 一键安装
+
+```bash
+pip install wechat-claudecode-mcp    # 安装（如果还没装）
+wechat-mcp-setup                      # 一键配置
+wechat-mcp-chat                       # 启动聊天
+```
+
+`wechat-mcp-setup` 会自动检查环境、注册 MCP Server、创建配置文件。只需运行一次。
+
+之后每次想聊天，运行 `wechat-mcp-chat` 即可。
+
+### 手动安装（如果一键安装有问题）
 
 在项目目录创建 `.mcp.json`：
 
@@ -192,7 +220,7 @@ wechat-mcp-poll 12345@chatroom 10
 }
 ```
 
-### 启动
+启动：
 
 ```bash
 claude --dangerously-load-development-channels server:wechat
