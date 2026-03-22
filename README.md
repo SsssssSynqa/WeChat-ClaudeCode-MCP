@@ -14,7 +14,7 @@ wechat-mcp-chat                       # 3. 启动！扫码登录，开始聊天
 
 首次启动会弹出微信二维码，用手机扫码登录。之后每次只需 `wechat-mcp-chat` 即可自动连接。
 
-> 💡 这使用的是微信官方 ClawBot（iLink Bot API）。你在微信里会看到一个 "Claude code" AI 联系人，直接给它发消息就是在跟 Claude 聊天。
+> 💡 这使用的是微信官方的 **微信ClawBot**（@WeixinTeam 出品，基于 iLink Bot API）。扫码后微信里会出现一个名叫"微信ClawBot"的 AI 联系人，你可以在它的设置里自定义名字和头像（比如改成"Claude code" + Claude logo）。直接给它发消息就是在跟 Claude 聊天。
 
 ---
 
@@ -236,14 +236,16 @@ claude --dangerously-load-development-channels server:wechat
 你在微信发消息 → iLink Bot API → claude-wechat-channel → Claude Code session 处理 → 回复推回微信
 ```
 
-这不是登录你的微信号，而是通过微信官方的 bot 机制创建一个 bot 账号。你在微信里会看到一个叫 "Claude code" 的 AI 联系人，给它发消息就是在跟 Claude 聊天。
+这不是登录你的微信号，而是通过微信官方的 **微信ClawBot**（@WeixinTeam 出品）创建一个 bot 账号。扫码后你的微信里会出现一个名叫"微信ClawBot"的 AI 联系人，可以在它的设置页自定义名字和头像。给它发消息就是在跟 Claude 聊天。
 
 ### 注意事项
 
 - `--dangerously-load-development-channels` 是 Claude Code 的实验性功能，只在 CLI 终端可用，**PC/Mac 客户端不支持**
 - 这是 **bot 模式**：只能回复给 bot 发消息的人，不能主动给你通讯录里的其他人发消息
+- **24 小时回复限制**：你发消息后，bot 仅接收 24 小时内的回复。超过 24 小时未回复则该消息作废
 - 微信有 4000 字符消息长度限制，claude-wechat-channel 会自动分段发送长回复
 - Claude 的回复会自动从 Markdown 转为纯文本（微信不渲染 Markdown）
+- bot 的名字和头像可以自定义：在微信里点击 bot 头像 → 设置 → 修改名字/头像
 
 ---
 
