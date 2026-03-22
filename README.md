@@ -157,10 +157,56 @@ MCP Server 通过以下方式自动查找密钥和数据库：
 
 MCP Server 和消息轮询使用 [sqlcipher3](https://pypi.org/project/sqlcipher3/)（Python 绑定）直接查询加密数据库，每次只解密查询涉及的数据页，无需预先解密整个数据库文件。`wechat-mcp-decrypt` 和 `wechat-mcp-export` 则通过 sqlcipher CLI 将数据库完整解密为明文 SQLite 文件，适合离线分析和导出。
 
+## 微信实时聊天（双向对话）
+
+上面的 MCP Server 让 Claude 能**读取**微信聊天记录，但不能实时收发消息。如果你想让 Claude Code 通过微信跟你**实时聊天**（你发消息给 Claude，Claude 直接在微信里回复你），可以使用 [claude-wechat-channel](https://github.com/fengliu222/claude-wechat-channel)。
+
+### 安装
+
+在项目目录创建 `.mcp.json`：
+
+```json
+{
+  "mcpServers": {
+    "wechat": {
+      "command": "npx",
+      "args": ["claude-wechat-channel"]
+    }
+  }
+}
+```
+
+### 启动
+
+```bash
+claude --dangerously-load-development-channels server:wechat
+```
+
+首次启动会弹出微信二维码，扫码登录即可。之后凭证保存在 `~/.wechat-claude/`，下次自动连接。
+
+### 工作原理
+
+claude-wechat-channel 使用微信 iLink Bot API，将微信接入 Claude Code 的 development channel 机制。收到的微信消息会直接推送到当前 Claude Code session，由当前 session 的 Claude 处理并回复——也就是说，回复你的是读了你 CLAUDE.md 的那个 Claude，不是一个裸的模型。
+
+### 注意事项
+
+- 需要 Claude Code **v2.1.80+**（`claude --version` 检查，`claude update` 更新）
+- `--dangerously-load-development-channels` 是实验性功能，只在 CLI 终端可用，不支持 PC 客户端
+- 这是 bot 模式：只能回复给你发消息的人，不能主动给任意联系人发消息
+- 建议和上面的 MCP Server 搭配使用——MCP 提供历史消息查询能力，channel 提供实时对话能力
+
+### 搭配使用示例
+
+同时启用两个功能后，Claude 可以：
+
+- 通过 MCP 工具查看你和朋友的历史聊天（"帮我看看我和小明上周聊了什么"）
+- 通过 channel 实时回复你的微信消息（你在微信里直接跟 Claude 对话）
+
 ## 致谢
 
 - [Thearas/wechat-db-decrypt-macos](https://github.com/Thearas/wechat-db-decrypt-macos) — 核心解密方案
 - [ylytdeng/wechat-decrypt](https://github.com/ylytdeng/wechat-decrypt) — 内存搜索方案参考
+- [fengliu222/claude-wechat-channel](https://github.com/fengliu222/claude-wechat-channel) — 微信实时聊天 channel
 
 ## License
 
